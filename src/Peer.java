@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Peer {
@@ -22,7 +23,7 @@ public class Peer {
             Socket socket = null;
 
             try {
-                socket = new Socket(address[0], Integer.valueOf(address[1]));
+                socket = new Socket(InetAddress.getByName(address[0]), Integer.valueOf(address[1]));
                 new PeerThread(socket).start();
             } catch (Exception e) {
                 if (socket != null) {
