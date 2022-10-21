@@ -1,47 +1,122 @@
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
+import java.util.ArrayList;
 
 public class Peer {
-    public static void main(String[] args) throws Exception {
-        String[] connectionInfo;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Enter connection information:");
-        connectionInfo = reader.readLine().split(" ");
-        Server serverThread = new Server(connectionInfo[1]);
-        serverThread.start();
-        new Peer().updateListenToPeers(reader, connectionInfo[0], serverThread);
+
+//    public static void main(String[] args) throws Exception {
+//        String[] peerInfo;
+//        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+//
+//        System.out.println("Enter connection information:");
+//        peerInfo = br.readLine().split(" ");
+//
+//        Server serverThread = new Server(peerInfo[1]);
+//        serverThread.start();
+//        new Peer().connectPeer(br, peerInfo[0], serverThread);
+//    }
+
+    private int _peerID;
+    private String _hostName;
+    private int _listeningPort;
+    private boolean _hasFile;
+
+    public Peer (int peerID, String hostName, int listeningPort, boolean hasFile) {
+        _peerID = peerID;
+        _hostName = hostName;
+        _listeningPort = listeningPort;
+        _hasFile = hasFile;
     }
 
-    public void updateListenToPeers(BufferedReader reader, String username, Server serverThread) throws Exception {
-        System.out.println("Enter connection information for peers:");
-        String input = reader.readLine();
-        String[] inputValues = input.split(" ");
+    public Peer() {}
 
-        for (int i = 0; i < inputValues.length; i++) {
-            String[] address = inputValues[i].split(":");
+    public Server startPeer() throws Exception {
+        System.out.println(_peerID);
+        System.out.println(_hostName);
+        System.out.println(_listeningPort);
+        System.out.println(_hasFile);
+
+        Server serverThread = new Server(_listeningPort);
+        serverThread.start();
+
+        return serverThread;
+        // new Peer().connectPeer(_peerID, serverThread);
+    }
+
+    public int getPeerID() {
+
+        return _peerID;
+    }
+
+    public String getHostName() {
+
+        return _hostName;
+    }
+
+    public int getlisteningPort() {
+
+        return _listeningPort;
+    }
+
+    public boolean getHasFile() {
+
+        return _hasFile;
+    }
+
+    public void connectPeer(int peerID, Server serverThread, ArrayList<Peer> peers) throws Exception {
+        peers.forEach(peer -> {
             Socket socket = null;
+            String hostname = peer.getHostName();
+            int port = peer.getlisteningPort();
 
+            // For testing
+            hostname = "localhost";
             try {
-                socket = new Socket(InetAddress.getByName(address[0]), Integer.valueOf(address[1]));
+                socket = new Socket(hostname, port);
                 new PeerThread(socket).start();
             } catch (Exception e) {
                 if (socket != null) {
-                    socket.close();
+                    try {
+                        socket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 } else {
-                    System.out.println("invalid input. skipping to next step");
+                    System.out.println("invalid");
                 }
             }
-        }
-        communicate(reader, username, serverThread);
+        });
+
+
+        //System.out.println("Enter connection information for peers (separated by ':'):");
+        //String input = br.readLine();
+        //String[] inputValues = input.split(" ");
+
+//        for (int i = 0; i < inputValues.length; i++) {
+//            String[] address = inputValues[i].split(":");
+//            Socket socket = null;
+//
+//            try {
+//                socket = new Socket(address[0], Integer.valueOf(address[1]));
+//                new PeerThread(socket).start();
+//            } catch (Exception e) {
+//                if (socket != null) {
+//                    socket.close();
+//                } else {
+//                    System.out.println("invalid");
+//                }
+//            }
+//        }
+        connection(peerID, serverThread);
     }
 
-    public void communicate(BufferedReader reader, String username, Server serverThread) {
+    public void connection(int peerId, Server serverThread) {
         try {
-            System.out.println("you can now communicate");
+            System.out.println("Communicating");
             boolean flag = true;
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             while (flag) {
-                String message = reader.readLine();
+                String message = br.readLine();
                 serverThread.sendMessage(message);
             }
             System.exit(0);

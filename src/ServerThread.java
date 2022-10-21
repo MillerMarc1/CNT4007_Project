@@ -1,31 +1,29 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 
 public class ServerThread extends Thread {
     private  Server server;
-    private Socket socket;
-    private PrintWriter printWriter;
+    private Socket serverSocket;
+    private PrintWriter pw;
 
     public ServerThread(Socket socket, Server server) {
         this.server = server;
-        this.socket = socket;
+        this.serverSocket = socket;
     }
 
     public void run() {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.printWriter = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader br = new BufferedReader(new InputStreamReader(this.serverSocket.getInputStream()));
+            this.pw = new PrintWriter(serverSocket.getOutputStream(), true);
             while (true) {
-                server.sendMessage(bufferedReader.readLine());
+                server.sendMessage(br.readLine());
             }
         } catch (Exception e) {
             server.getServerThreads().remove(this);
         }
     }
 
-    public PrintWriter getPrintWriter() {
-        return printWriter;
+    public PrintWriter getPw() {
+        return pw;
     }
 }

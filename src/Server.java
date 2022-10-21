@@ -3,15 +3,16 @@ import java.util.*;
 
 public class Server extends Thread {
     private Set<ServerThread> serverThreads = new HashSet<ServerThread>();
-    private ServerSocket socket;
-    public Server(String portNum) throws Exception {
-        socket = new ServerSocket(Integer.valueOf(portNum));
+    private ServerSocket serverSocket;
+
+    public Server(int portNum) throws Exception {
+        serverSocket = new ServerSocket(portNum);
     }
 
     public void run() {
         try {
             while (true) {
-                ServerThread serverThread = new ServerThread(socket.accept(), this);
+                ServerThread serverThread = new ServerThread(serverSocket.accept(), this);
                 serverThreads.add(serverThread);
                 serverThread.start();
             }
@@ -23,7 +24,7 @@ public class Server extends Thread {
     void sendMessage(String message) {
         try {
             for (ServerThread serverThread : serverThreads) {
-                serverThread.getPrintWriter().println(message);
+                serverThread.getPw().println(message);
             }
         } catch (Exception e) {
             e.printStackTrace();
