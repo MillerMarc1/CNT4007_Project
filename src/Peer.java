@@ -78,7 +78,7 @@ public class Peer {
             int port = peer.getlisteningPort();
 
             // For testing
-            hostname = "localhost";
+            hostname = "Marcs-MacBook-Pro";
             try {
                 socket = new Socket(hostname, port);
                 new PeerThread(socket).start();
