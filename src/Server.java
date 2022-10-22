@@ -31,6 +31,10 @@ public class Server extends Thread {
         }
     }
 
+    public ServerSocket getServerSocket() {
+        return serverSocket;
+    }
+
     public Set<ServerThread> getServerThreads() {
         return serverThreads;
     }

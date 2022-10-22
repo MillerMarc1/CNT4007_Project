@@ -1,3 +1,12 @@
+/*
+ * Common.java
+ * 
+ * Class that parses the Common.cfg file and pulls out:
+ * preferredNeighbors, unchockingInterval, optimisticUInit, fileName, fileSize, pieceSize
+ * 
+ */
+
+
 import java.util.ArrayList;
 
 class Common {

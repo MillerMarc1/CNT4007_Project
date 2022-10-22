@@ -1,3 +1,11 @@
+/*
+ * ConfigReader.java
+ * 
+ * Class that parses the PeerInfo.cfg file and pulls out relevant information:
+ * peerID, hostname, listeningPort, hasFile, fileBool
+ * 
+ */
+
 //import dependencies
 import java.io.*;
 import java.util.ArrayList;

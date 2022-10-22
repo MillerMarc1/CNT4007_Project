@@ -1,3 +1,10 @@
+/*
+ * PeerProcess.java
+ * 
+ * Class that takes in peerId and begins to set up connections between peers by calling the other classes
+ * 
+ */
+
 import java.io.*;
 import java.lang.reflect.Array;
 import java.net.*;
@@ -39,10 +46,21 @@ public class PeerProcess {
 //            }
         }
 
-
-        // Change sleep to while loop that waits for connection
-        Thread.sleep(6000);
         
+        
+        // Change sleep to while loop that waits for connection
+       // Thread.sleep(6000);
+
+        // while (serverThread1.getServerThreads().isEmpty()) {
+        //     // Waiting on connection
+        // }
+
+        //System.out.println(serverThread1.getServerThreads());
+
+        while (serverThread1.getServerThreads().isEmpty()) {
+            Thread.sleep(1000);
+        }
+
         ArrayList<Peer> peerList1 = new ArrayList<>();
         peerList1.add(peers.get(1));
         peers.get(0).connectPeer(peers.get(0).getPeerID(), serverThread1, peerList1);
