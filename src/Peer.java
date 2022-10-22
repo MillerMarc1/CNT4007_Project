@@ -132,4 +132,46 @@ public class Peer {
 
         }
     }
+
+    // Handshake is sent when connection is established
+    public void sendHandshake() {
+
+    }
+
+    // After handshake is completed
+    public void sendMessage() {
+
+    }
+
+    public void choke() {
+
+    }
+
+    public void unchoke() {
+
+    } 
+
+    public void interested() {
+
+    }
+
+    public void notInterested() {
+
+    }
+
+    public void have() {
+
+    }
+
+    public void bitfield() {
+
+    }
+
+    public void request() {
+
+    }
+
+    public void piece() {
+        
+    }
 }

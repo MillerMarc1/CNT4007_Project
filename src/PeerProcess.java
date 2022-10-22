@@ -21,10 +21,10 @@ public class PeerProcess {
         // Get the number of peers
         int peerCount = peers.size();
 
-        Server serverThread1 = null;
+        Server serverThread = null;
         // First peer, cannot open any connections
         if (peers.get(0).getPeerID() == peerID) {
-            serverThread1 = peers.get(0).startPeer();
+            serverThread = peers.get(0).startPeer();
 
             // System.out.println("Peer 1 has been started, listening for connections...");
             // ServerSocket listener = new ServerSocket(peers.get(0).getlisteningPort());
@@ -39,23 +39,18 @@ public class PeerProcess {
         } else {
 
             // Start each peer and set up communication with previous peers
-            for (int i = 1; i < peerCount; i++) {
-
-            }
-
             ArrayList<Peer> peerList = new ArrayList<>();
-            // If you are the second peer, connect to peer 1
-            if (peers.get(1).getPeerID() == peerID) {
-                peerList.add(peers.get(0));
-                Server serverThread = peers.get(1).startPeer();
-                peers.get(1).connectPeer(peerID, serverThread, peerList);
+            for (int i = 1; i < peerCount; i++) {
+                if (peers.get(i).getPeerID() == peerID) {
+                    peerList.add(peers.get(i-1));
+                    serverThread = peers.get(i).startPeer();
+                    peers.get(i).connectPeer(peerID, serverThread, peerList);
+                }
             }
-//            else if (peers.get(2).getPeerID() == peerID) {
-//                peerList.add(peers.get(1));
-//                Server serverThread = peers.get(1).startPeer();
-//                peers.get(1).connectPeer(peerID, serverThread, peerList);
-//            }
         }
+
+        // Read Common.cfg
+        //Common common = ConfigReader.getCommon();
 
         
         
@@ -69,13 +64,13 @@ public class PeerProcess {
         //System.out.println(serverThread1.getServerThreads());
 
         // Wait until Peer has started connection with other peer
-        while (serverThread1.getServerThreads().isEmpty()) {
+        while (serverThread.getServerThreads().isEmpty()) {
             Thread.sleep(1000);
         }
 
         // Create p2p connections
         ArrayList<Peer> peerList1 = new ArrayList<>();
         peerList1.add(peers.get(1));
-        peers.get(0).connectPeer(peers.get(0).getPeerID(), serverThread1, peerList1);
+        peers.get(0).connectPeer(peers.get(0).getPeerID(), serverThread, peerList1);
     }
 }
