@@ -16,12 +16,16 @@ public class Peer {
 //        new Peer().connectPeer(br, peerInfo[0], serverThread);
 //    }
 
+    //declare Peer class variables
     private int _peerID;
     private String _hostName;
     private int _listeningPort;
     private boolean _hasFile;
 
     public Peer (int peerID, String hostName, int listeningPort, boolean hasFile) {
+        //constructor for Peer class
+
+        //initialize peerID, hostName, listeningPort, and hasFile for Peer instance
         _peerID = peerID;
         _hostName = hostName;
         _listeningPort = listeningPort;
@@ -43,21 +47,25 @@ public class Peer {
         // new Peer().connectPeer(_peerID, serverThread);
     }
 
+    //utility function to allow retrieval of peerID
     public int getPeerID() {
 
         return _peerID;
     }
 
+    //utility function to allow retrieval of peerID
     public String getHostName() {
 
         return _hostName;
     }
 
+    //utility function to allow retrieval of peerID
     public int getlisteningPort() {
 
         return _listeningPort;
     }
 
+    //utility function to allow retrieval of peerID
     public boolean getHasFile() {
 
         return _hasFile;

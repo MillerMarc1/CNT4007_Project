@@ -1,4 +1,5 @@
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
 
@@ -8,9 +9,21 @@ public class PeerProcess {
 
         ArrayList<Peer> peers = ConfigReader.getPeerInfo();
 
+        Server serverThread1 = null;
         // First peer, cannot open any connections
         if (peers.get(0).getPeerID() == peerID) {
-            peers.get(0).startPeer();
+            serverThread1 = peers.get(0).startPeer();
+
+            // System.out.println("Peer 1 has been started, listening for connections...");
+            // ServerSocket listener = new ServerSocket(peers.get(0).getlisteningPort());
+
+            // while (true) {
+            //     Socket connSocket = listener.accept();
+            //     BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connSocket.getInputStream()));
+            //     DataOutputStream outToClient = new DataOutputStream(connSocket.getOutputStream());
+            //     String clientSentance = inFromClient.readLine();
+            // }
+
         } else {
             ArrayList<Peer> peerList = new ArrayList<>();
             // If you are the second peer, connect to peer 1
@@ -25,5 +38,13 @@ public class PeerProcess {
 //                peers.get(1).connectPeer(peerID, serverThread, peerList);
 //            }
         }
+
+
+        // Change sleep to while loop that waits for connection
+        Thread.sleep(6000);
+        
+        ArrayList<Peer> peerList1 = new ArrayList<>();
+        peerList1.add(peers.get(1));
+        peers.get(0).connectPeer(peers.get(0).getPeerID(), serverThread1, peerList1);
     }
 }
