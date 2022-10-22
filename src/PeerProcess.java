@@ -12,9 +12,14 @@ import java.util.ArrayList;
 
 public class PeerProcess {
     public static void main(String[] args) throws Exception {
+        // Take command line peerID input
         int peerID = Integer.valueOf(args[0]);
 
+        // Read PeerInfo.cfg and put peer objects into peers array list
         ArrayList<Peer> peers = ConfigReader.getPeerInfo();
+
+        // Get the number of peers
+        int peerCount = peers.size();
 
         Server serverThread1 = null;
         // First peer, cannot open any connections
@@ -28,10 +33,16 @@ public class PeerProcess {
             //     Socket connSocket = listener.accept();
             //     BufferedReader inFromClient = new BufferedReader(new InputStreamReader(connSocket.getInputStream()));
             //     DataOutputStream outToClient = new DataOutputStream(connSocket.getOutputStream());
-            //     String clientSentance = inFromClient.readLine();
+            //     String clientSentence = inFromClient.readLine();
             // }
 
         } else {
+
+            // Start each peer and set up communication with previous peers
+            for (int i = 1; i < peerCount; i++) {
+
+            }
+
             ArrayList<Peer> peerList = new ArrayList<>();
             // If you are the second peer, connect to peer 1
             if (peers.get(1).getPeerID() == peerID) {
@@ -57,10 +68,12 @@ public class PeerProcess {
 
         //System.out.println(serverThread1.getServerThreads());
 
+        // Wait until Peer has started connection with other peer
         while (serverThread1.getServerThreads().isEmpty()) {
             Thread.sleep(1000);
         }
 
+        // Create p2p connections
         ArrayList<Peer> peerList1 = new ArrayList<>();
         peerList1.add(peers.get(1));
         peers.get(0).connectPeer(peers.get(0).getPeerID(), serverThread1, peerList1);
