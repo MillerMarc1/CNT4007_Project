@@ -21,6 +21,7 @@ public class Peer {
     private String _hostName;
     private int _listeningPort;
     private boolean _hasFile;
+    ArrayList<Peer> peersList = ConfigReader.peers;
 
     public Peer (int peerID, String hostName, int listeningPort, boolean hasFile) {
         //constructor for Peer class
@@ -93,28 +94,8 @@ public class Peer {
                     System.out.println("invalid");
                 }
             }
+            System.out.println("Connect Peer: " + serverThread.getServerThreads());
         });
-
-
-        //System.out.println("Enter connection information for peers (separated by ':'):");
-        //String input = br.readLine();
-        //String[] inputValues = input.split(" ");
-
-//        for (int i = 0; i < inputValues.length; i++) {
-//            String[] address = inputValues[i].split(":");
-//            Socket socket = null;
-//
-//            try {
-//                socket = new Socket(address[0], Integer.valueOf(address[1]));
-//                new PeerThread(socket).start();
-//            } catch (Exception e) {
-//                if (socket != null) {
-//                    socket.close();
-//                } else {
-//                    System.out.println("invalid");
-//                }
-//            }
-//        }
         connection(peerID, serverThread);
     }
 
@@ -126,6 +107,19 @@ public class Peer {
             while (flag) {
                 String message = br.readLine();
                 serverThread.sendMessage(message);
+
+                // Check if new peer is online
+                System.out.println("Connection: " + serverThread.getServerThreads());
+
+                if (!serverThread.getServerThreads().isEmpty()) {
+                    for (int i = 2; i < peersList.size(); i++) {
+                        String hostname = "localhost";
+                        Socket socket = null;
+                        int port = peersList.get(i).getlisteningPort();
+                        socket = new Socket(hostname, port);
+                        new PeerThread(socket).start();
+                    }
+                }
             }
             System.exit(0);
         } catch (Exception e) {

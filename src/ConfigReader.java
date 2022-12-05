@@ -13,7 +13,8 @@ import java.util.Scanner;
 
 
 public class ConfigReader {
-
+    //declare arraylist of peers to be returned at end of function
+    public static ArrayList<Peer> peers = new ArrayList<>();
     static ArrayList<Peer> getPeerInfo() {
         //this function retrieves the various elements of the PeerInfo.cfg file and returns them as an arraylist of Peers
         
@@ -23,8 +24,7 @@ public class ConfigReader {
         int listeningPort;
         boolean hasFile;
         int fileBool;
-        //declare arraylist of peers to be returned at end of function
-        ArrayList<Peer> peers = new ArrayList<>();
+       
         
         //initialize proper file path
         String filePath = "project_config_file_large/PeerInfo.cfg";
