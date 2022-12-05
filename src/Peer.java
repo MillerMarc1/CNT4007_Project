@@ -1,6 +1,9 @@
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Set;
 
 public class Peer {
 
@@ -21,7 +24,7 @@ public class Peer {
     private String _hostName;
     private int _listeningPort;
     private boolean _hasFile;
-    ArrayList<Peer> peersList = ConfigReader.peers;
+    List<Peer> peersHt = ConfigReader.peersList;
 
     public Peer (int peerID, String hostName, int listeningPort, boolean hasFile) {
         //constructor for Peer class
@@ -72,7 +75,7 @@ public class Peer {
         return _hasFile;
     }
 
-    public void connectPeer(int peerID, Server serverThread, ArrayList<Peer> peers) throws Exception {
+    public void connectPeer(int peerID, Server serverThread, List<Peer> peers) throws Exception {
         peers.forEach(peer -> {
             Socket socket = null;
             String hostname = peer.getHostName();
@@ -102,6 +105,7 @@ public class Peer {
     public void connection(int peerId, Server serverThread) {
         try {
             System.out.println("Communicating");
+            serverThread.sendMessage(Messages.handshakeMessage(peerId).toString());
             boolean flag = true;
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             while (flag) {
@@ -112,10 +116,12 @@ public class Peer {
                 System.out.println("Connection: " + serverThread.getServerThreads());
 
                 if (!serverThread.getServerThreads().isEmpty()) {
-                    for (int i = 2; i < peersList.size(); i++) {
+                    for (int i = 2; i < peersHt.size(); i++) {
                         String hostname = "localhost";
                         Socket socket = null;
-                        int port = peersList.get(i).getlisteningPort();
+
+                        
+                        int port = peersHt.get(i).getlisteningPort();
                         socket = new Socket(hostname, port);
                         new PeerThread(socket).start();
                     }

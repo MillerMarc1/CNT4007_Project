@@ -8,14 +8,15 @@
 
 //import dependencies
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Scanner;
-
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collections;
 
 public class ConfigReader {
-    //declare arraylist of peers to be returned at end of function
-    public static ArrayList<Peer> peers = new ArrayList<>();
-    static ArrayList<Peer> getPeerInfo() {
+    public static List<Peer> peersList = Collections.synchronizedList(new ArrayList<Peer>());
+    static Hashtable<Integer,Peer> getPeerInfo() {
         //this function retrieves the various elements of the PeerInfo.cfg file and returns them as an arraylist of Peers
         
         //declare variables for the respective fields of a PeerInfo.cfg entry
@@ -24,7 +25,8 @@ public class ConfigReader {
         int listeningPort;
         boolean hasFile;
         int fileBool;
-       
+
+       Hashtable<Integer,Peer> peers = new Hashtable<>();
         
         //initialize proper file path
         String filePath = "project_config_file_large/PeerInfo.cfg";
@@ -47,7 +49,8 @@ public class ConfigReader {
                 }
                 //once the respective fields have been parsed, place the data into a new Peer instance and add it to the arraylist of Peers
                 Peer peer = new Peer(peerID, hostName, listeningPort, hasFile);
-                peers.add(peer);
+                peers.put(peer.getPeerID(), peer);
+                peersList.add(peer);
                 if (scanner.hasNext()) {
                     scanner.nextLine();
                 }

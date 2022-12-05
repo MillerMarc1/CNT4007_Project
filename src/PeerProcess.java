@@ -8,7 +8,9 @@
 import java.io.*;
 import java.lang.reflect.Array;
 import java.net.*;
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 public class PeerProcess {
@@ -19,7 +21,9 @@ public class PeerProcess {
         int peerIDIndex = 0;
 
         // Read PeerInfo.cfg and put peer objects into peers array list
-        ArrayList<Peer> peers = ConfigReader.getPeerInfo();
+        ConfigReader.getPeerInfo();
+        List<Peer> peers = ConfigReader.peersList;
+        //Hashtable<Integer,Peer> peers = ConfigReader.getPeerInfo();
 
         // Get the number of peers
         int peerCount = peers.size();
@@ -43,7 +47,7 @@ public class PeerProcess {
 
         } else {
             // Start each peer and set up communication with previous peers
-            ArrayList<Peer> peerList = new ArrayList<>();
+            List<Peer> peerList = new ArrayList<>();
             for (int i = 1; i < peerCount; i++) {
                 if (peers.get(i).getPeerID() == peerID) {
                     peerIDIndex = i;

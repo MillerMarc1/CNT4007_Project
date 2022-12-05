@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        ArrayList<Peer> peers = ConfigReader.getPeerInfo();
-
-        // Loop through number of peers and create a peer for each one
-        peers.forEach((peer -> {
-            System.out.println(peer.getPeerID() + "   " + peer.getHostName() + "   " + peer.getlisteningPort() + "   " + peer.getHasFile());
-        }));
+        // ConfigReader.getPeerInfo();
+        // //ArrayList<Peer> peers = ConfigReader.peersList;
+        // // Loop through number of peers and create a peer for each one
+        // peers.forEach((peer -> {
+        //     System.out.println(peer.getPeerID() + "   " + peer.getHostName() + "   " + peer.getlisteningPort() + "   " + peer.getHasFile());
+        // }));
 
 //        Common common = ConfigReader.getCommon();
 //
